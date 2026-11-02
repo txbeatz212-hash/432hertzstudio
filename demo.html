@@ -1,0 +1,694 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>DEMO YARIŞMASI | 432 Hertz Studio</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Plus Jakarta Sans', sans-serif; -webkit-tap-highlight-color: transparent; }
+    
+    html, body { height: 100%; }
+
+    body { 
+      background: radial-gradient(circle at 50% 20%, #1c0d2e 0%, #0d0614 60%, #06030a 100%); 
+      color: #ffffff; 
+      line-height: 1.6; 
+      min-height: 100vh; 
+      display: flex; 
+      flex-direction: column; 
+      overflow-x: hidden;
+      position: relative;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      top: 0; left: 0; width: 100%; height: 100%;
+      background-image: radial-gradient(white 1px, transparent 0);
+      background-size: 50px 50px;
+      opacity: 0.03;
+      animation: neonFloat 25s linear infinite;
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    @keyframes neonFloat {
+      0% { transform: translateY(0); }
+      100% { transform: translateY(-50px); }
+    }
+    
+    header { border-bottom: 1px solid #1a1a1a; background: #000000; position: sticky; top: 0; z-index: 99999; width: 100%; }
+    .header-container { max-width: 1250px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; padding: 12px 16px; }
+    
+    .brand-left { display: flex; flex-direction: column; align-items: flex-start; text-decoration: none; padding: 4px 0; cursor: pointer; }
+    .logo-text-main { font-size: 20px; font-weight: 800; color: #ffffff; letter-spacing: 1px; line-height: 1.1; }
+    .sub-slogan { font-size: 9px; font-weight: 800; color: #94a3b8; letter-spacing: 1.5px; text-transform: uppercase; margin-top: 2px; }
+
+    nav { display: flex; gap: 6px; align-items: center; }
+    .nav-link { color: #9ca3af; font-size: 13px; font-weight: 700; text-decoration: none; padding: 10px 14px; border-radius: 8px; cursor: pointer; white-space: nowrap; background: transparent; transition: 0.2s; text-transform: uppercase; letter-spacing: 0.5px; }
+    .nav-link:hover { color: #ffffff; background: #111116; }
+    .nav-link.active { color: #000000 !important; background: #ffffff !important; }
+
+    .auth-bar { background: #000000; border-bottom: 1px solid #151515; padding: 8px 16px; font-size: 12px; color: #94a3b8; display: flex; justify-content: flex-end; align-items: center; gap: 15px; z-index: 2; position: relative; }
+    .auth-bar span { color: #ffffff; font-weight: 700; }
+    .auth-btn-mini { background: #ffffff; color: #000000; border: none; padding: 6px 14px; border-radius: 6px; font-weight: 800; font-size: 12px; cursor: pointer; }
+
+    .demo-main-wrapper {
+      max-width: 1250px;
+      margin: 30px auto;
+      padding: 0 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 25px;
+      width: 100%;
+      z-index: 2;
+      position: relative;
+      flex: 1;
+    }
+
+    .top-section-grid {
+      display: grid;
+      grid-template-columns: 380px 1fr;
+      gap: 25px;
+    }
+
+    .panel-box {
+      background: rgba(18, 14, 26, 0.85);
+      border: 1.5px solid #3b1c5c;
+      border-radius: 24px;
+      padding: 24px;
+      box-shadow: 0 15px 35px rgba(0,0,0,0.5);
+      backdrop-filter: blur(10px);
+      display: flex;
+      flex-direction: column;
+      height: 600px;
+    }
+
+    .panel-title {
+      font-size: 17px;
+      font-weight: 800;
+      color: #ffffff;
+      margin-bottom: 16px;
+      border-bottom: 1px solid #2d1747;
+      padding-bottom: 10px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-shrink: 0;
+    }
+
+    .scroll-area {
+      overflow-y: auto;
+      flex: 1;
+      padding-right: 4px;
+    }
+    .scroll-area::-webkit-scrollbar { width: 5px; }
+    .scroll-area::-webkit-scrollbar-thumb { background: #3b1c5c; border-radius: 4px; }
+
+    .top10-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: rgba(7, 4, 13, 0.85);
+      border: 1px solid #3b1c5c;
+      border-radius: 14px;
+      padding: 12px 14px;
+      margin-bottom: 10px;
+    }
+    .top10-rank { font-size: 16px; font-weight: 800; color: #a78bfa; width: 32px; }
+    .top10-info { flex: 1; margin-left: 8px; overflow: hidden; }
+    .top10-name { font-size: 13.5px; font-weight: 700; color: #fff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .top10-artist { font-size: 11px; color: #94a3b8; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; display: flex; align-items: center; gap: 6px; }
+    .top10-score { font-size: 16px; font-weight: 800; color: #22c55e; background: rgba(34,197,94,0.12); padding: 6px 12px; border-radius: 10px; margin-left: 10px; }
+
+    .demo-card {
+      background: rgba(7, 4, 13, 0.9);
+      border: 1px solid #3b1c5c;
+      border-radius: 16px;
+      padding: 18px;
+      margin-bottom: 15px;
+      transition: 0.2s;
+    }
+    .demo-card:hover { border-color: #7c3aed; }
+    
+    .demo-card.listened {
+      background: rgba(30, 20, 45, 0.95);
+      border: 2px solid #ffffff !important;
+      box-shadow: 0 0 25px rgba(255, 255, 255, 0.25);
+    }
+
+    .demo-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 10px; }
+    .artist-profile-area { display: flex; align-items: center; gap: 10px; }
+    .artist-avatar { width: 42px; height: 42px; border-radius: 50%; object-fit: cover; border: 1.5px solid #8b5cf6; background: #231138; }
+    
+    .demo-song-title { font-size: 15.5px; font-weight: 800; color: #fff; }
+    .demo-artist-name { font-size: 12px; font-weight: 700; color: #c4b5fd; display: flex; align-items: center; gap: 6px; }
+    .insta-badge { font-size: 10px; color: #f472b6; background: rgba(244,114,182,0.15); padding: 2px 6px; border-radius: 6px; text-decoration: none; font-weight: 700; }
+    .insta-badge:hover { background: rgba(244,114,182,0.3); }
+
+    .demo-current-score { font-size: 13px; font-weight: 800; color: #a78bfa; background: rgba(139, 92, 246, 0.15); padding: 4px 10px; border-radius: 8px; }
+    
+    audio { width: 100%; height: 38px; margin: 10px 0; border-radius: 8px; }
+
+    .rating-container {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      margin-top: 12px;
+      border-top: 1px solid #231138;
+      padding-top: 12px;
+    }
+    .stars-wrapper {
+      display: flex;
+      gap: 4px;
+      align-items: center;
+      cursor: pointer;
+      flex-wrap: wrap;
+    }
+    .star-btn {
+      background: none;
+      border: none;
+      font-size: 20px;
+      cursor: pointer;
+      color: #ffffff;
+      transition: transform 0.1s;
+      padding: 0 2px;
+    }
+    .star-btn:hover { transform: scale(1.2); }
+    .star-btn.selected {
+      color: #000000;
+      text-shadow: 0 0 3px #ffffff;
+    }
+
+    .rating-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .selected-rating-text { font-size: 12.5px; font-weight: 700; color: #c4b5fd; }
+    .btn-vote-submit { background: #22c55e; color: #000000; font-weight: 800; font-size: 12.5px; padding: 6px 16px; border-radius: 8px; border: none; cursor: pointer; }
+    .btn-vote-submit:hover { background: #16a34a; color: #fff; }
+
+    .panels-bottom-grid {
+      display: grid;
+      grid-template-columns: 1fr 1.5fr;
+      gap: 25px;
+    }
+
+    .bottom-box {
+      background: rgba(18, 14, 26, 0.9);
+      border: 1.5px solid #4c1d95;
+      border-radius: 24px;
+      padding: 24px;
+      box-shadow: 0 15px 35px rgba(0,0,0,0.5);
+      backdrop-filter: blur(10px);
+    }
+    
+    label { display: block; font-size: 11px; font-weight: 800; color: #c4b5fd; margin-bottom: 5px; letter-spacing: 1px; text-transform: uppercase; }
+    input { width: 100%; padding: 11px 14px; background: #120a1c; border: 1.5px solid #3b1c5c; border-radius: 10px; color: #ffffff; font-size: 13px; font-weight: 600; outline: none; margin-bottom: 10px; }
+    input:focus { border-color: #a78bfa; }
+
+    .form-grid-upload {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1.2fr;
+      gap: 12px;
+      align-items: flex-end;
+    }
+
+    .btn-action { width: 100%; background: #ffffff; color: #000000; font-size: 14px; font-weight: 800; padding: 13px; border-radius: 10px; border: none; cursor: pointer; transition: 0.2s; box-shadow: 0 8px 20px rgba(255,255,255,0.15); height: 45px; }
+    .btn-action:hover { background: #e2e8f0; transform: translateY(-2px); }
+
+    .warning-note {
+      font-size: 11px;
+      color: #94a3b8;
+      line-height: 1.4;
+      margin-top: 12px;
+      text-align: center;
+      font-style: italic;
+      border-top: 1px solid #2d1747;
+      padding-top: 10px;
+    }
+
+    .not-logged-in-banner {
+      background: rgba(239, 68, 68, 0.15);
+      border: 1px solid #ef4444;
+      color: #fca5a5;
+      padding: 10px;
+      border-radius: 10px;
+      font-size: 12px;
+      font-weight: 700;
+      text-align: center;
+      margin-bottom: 12px;
+      display: none;
+    }
+
+    footer { 
+      text-align: center; 
+      padding: 10px 16px; 
+      color: #000000; 
+      font-size: 10.5px; 
+      background: #ffffff; 
+      font-weight: 700; 
+      z-index: 999; 
+      margin-top: auto;
+      width: 100%;
+      letter-spacing: 0.5px;
+    }
+
+    @media (max-width: 900px) {
+      .top-section-grid { grid-template-columns: 1fr; }
+      .panels-bottom-grid { grid-template-columns: 1fr; }
+      .panel-box { height: auto; max-height: 500px; }
+      .form-grid-upload { grid-template-columns: 1fr; }
+      .header-container { flex-direction: column; gap: 10px; padding: 12px 10px; }
+      nav { width: 100%; overflow-x: auto; justify-content: flex-start; padding-bottom: 6px; }
+      nav::-webkit-scrollbar { display: none; }
+      .nav-link { font-size: 11px; padding: 8px 10px; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="auth-bar" id="authBar" style="display: none;">
+    <div id="userInfo"></div>
+    <div>
+      <button class="auth-btn-mini" onclick="cıkısYap()">ÇIKIŞ YAP</button>
+    </div>
+  </div>
+
+  <header>
+    <div class="header-container">
+      <a href="index.html" class="brand-left">
+        <div class="logo-text-main">432 HERTZ STUDIO</div>
+        <span class="sub-slogan">NO LUCK, ON GOD!</span>
+      </a>
+      <nav>
+        <a href="index.html" class="nav-link">ANA SAYFA</a>
+        <a href="index.html#sec-hizmetler" onclick="window.location.href='index.html'" class="nav-link">HİZMETLER & FİYATLAR</a>
+        <a href="demo.html" class="nav-link active">DEMO</a>
+        <a href="index.html" onclick="window.location.href='index.html'" class="nav-link">RANDEVU AL</a>
+        <a href="index.html" onclick="window.location.href='index.html'" class="nav-link">HAKKIMDA</a>
+      </nav>
+    </div>
+  </header>
+
+  <div class="demo-main-wrapper">
+    <div class="top-section-grid">
+      <div class="panel-box">
+        <div class="panel-title"><span>🏆 TOP 10 LİSTESİ</span></div>
+        <div class="scroll-area" id="top10Listesi">
+          <div style="text-align: center; color: #94a3b8; font-size: 13px; padding: 20px;">Sıralama yükleniyor...</div>
+        </div>
+      </div>
+
+      <div class="panel-box">
+        <div class="panel-title">
+          <span>🎧 YÜKLENEN DEMOLAR</span>
+          <span style="font-size: 10.5px; color: #94a3b8;">En yeni üstte ⬆️</span>
+        </div>
+        <div class="scroll-area" id="demolarListesi">
+          <div style="text-align: center; color: #94a3b8; font-size: 13px; padding: 30px;">Demolar yükleniyor...</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="panels-bottom-grid">
+      <div class="bottom-box" id="profileBox">
+        <div class="panel-title" style="margin-bottom: 12px;"><span>⚙️ PROFİLİMİ DÜZENLE</span></div>
+        <form id="profilForm" onsubmit="profilKaydet(event)">
+          <label>PROFİL FOTOĞRAFI (Görsel URL)</label>
+          <input type="url" id="profilFotoUrl" placeholder="https://... (Fotoğraf linki)">
+          <label>İNSTAGRAM KULLANICI ADI</label>
+          <input type="text" id="instaKullanici" placeholder="Örn: txbeatz212">
+          <button type="submit" class="btn-action" style="margin-top: 5px;">PROFİLİ GÜNCELLE</button>
+        </form>
+      </div>
+
+      <div class="bottom-box" id="uploadFormContainer">
+        <div class="panel-title" style="margin-bottom: 12px;"><span>📤 YENİ DEMO YÜKLE</span></div>
+        <div id="uyariKutusu" class="not-logged-in-banner">⚠️ Demo yüklemek ve oylama yapmak için ana sayfadan giriş yapmalısın!</div>
+
+        <form id="demoForm" onsubmit="demoYukle(event)">
+          <div class="form-grid-upload">
+            <div>
+              <label>SANATÇI ADI</label>
+              <input type="text" id="sanatciAdi" required placeholder="Örn: TX!">
+            </div>
+            <div>
+              <label>PARÇA ADI</label>
+              <input type="text" id="parcaAdi" required placeholder="Örn: Karanlık Sokaklar">
+            </div>
+            <div>
+              <label>DOSYA (.mp3)</label>
+              <input type="file" id="demoDosya" accept=".mp3,audio/mpeg" required style="cursor: pointer; color-scheme: dark; padding: 9px;">
+            </div>
+          </div>
+          <div style="margin-top: 12px;">
+            <button type="submit" class="btn-action">DEMOYU SİSTEME YÜKLE</button>
+          </div>
+          <div class="warning-note">
+            ⏱️ <strong>Spam Koruması:</strong> 15 dakikada 1 demo, 12 saat içinde en fazla 3 demo yükleyebilirsin.<br>
+            ⚠️ Tüm demolar <strong>her Salı 00:00'da</strong> otomatik olarak silinir.
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    &copy; 2026 432 Hertz Studio &bull; İstanbul &bull; TX! &bull; Tüm Hakları Saklıdır.
+  </footer>
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+    import { getFirestore, collection, getDocs, addDoc, updateDoc, doc, getDoc, setDoc, query, where } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+    import { getAuth, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+    import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-storage.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyAgrDZnD2g9FOBjOCeNZkDfn4bVaA-Hv5o",
+      authDomain: "hz-studio-e9b1f.firebaseapp.com",
+      projectId: "hz-studio-e9b1f",
+      storageBucket: "hz-studio-e9b1f.firebasestorage.app",
+      messagingSenderId: "991778271893",
+      appId: "1:991778271893:web:74f76119ee245ddd67a19c",
+      measurementId: "G-2DFBRB4DC9"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+    const auth = getAuth(app);
+    const storage = getStorage(app);
+
+    let aktifKullanici = null;
+    let secilenPuanlar = {};
+    let dinlenenDemolarSet = new Set();
+    let kullaniciProfilleri = {};
+
+    onAuthStateChanged(auth, async (user) => {
+      const authBar = document.getElementById('authBar');
+      const userInfo = document.getElementById('userInfo');
+      const uyariKutusu = document.getElementById('uyariKutusu');
+      const uploadForm = document.getElementById('uploadFormContainer');
+      const profileBox = document.getElementById('profileBox');
+
+      aktifKullanici = user;
+      
+      if (user) {
+        authBar.style.display = 'flex';
+        userInfo.innerHTML = `Giriş Yapıldı: <span>${user.email}</span>`;
+        if(uyariKutusu) uyariKutusu.style.display = 'none';
+        if(uploadForm) { uploadForm.style.opacity = '1'; uploadForm.style.pointerEvents = 'auto'; }
+        if(profileBox) { profileBox.style.opacity = '1'; profileBox.style.pointerEvents = 'auto'; }
+
+        const userDocRef = doc(db, "profiller", user.uid);
+        const userSnap = await getDoc(userDocRef);
+        if (userSnap.exists()) {
+          const pData = userSnap.data();
+          if (pData.foto) document.getElementById('profilFotoUrl').value = pData.foto;
+          if (pData.insta) document.getElementById('instaKullanici').value = pData.insta;
+        }
+      } else {
+        if(authBar) authBar.style.display = 'none';
+        if(uyariKutusu) uyariKutusu.style.display = 'block';
+        if(uploadForm) { uploadForm.style.opacity = '0.4'; uploadForm.style.pointerEvents = 'none'; }
+        if(profileBox) { profileBox.style.opacity = '0.4'; profileBox.style.pointerEvents = 'none'; }
+      }
+      profilleriYukleVeDemolariGetir();
+    });
+
+    window.cıkısYap = function() {
+      signOut(auth).then(() => {
+        alert('Çıkış yapıldı.');
+        window.location.reload();
+      });
+    };
+
+    window.profilKaydet = async function(e) {
+      e.preventDefault();
+      if (!aktifKullanici) return;
+
+      const foto = document.getElementById('profilFotoUrl').value;
+      const insta = document.getElementById('instaKullanici').value.replace('@','');
+
+      try {
+        await setDoc(doc(db, "profiller", aktifKullanici.uid), {
+          foto: foto,
+          insta: insta,
+          email: aktifKullanici.email
+        }, { merge: true });
+
+        alert('Profilin başarıyla güncellendi! 🚀');
+        profilleriYukleVeDemolariGetir();
+      } catch (err) {
+        alert('Profil güncellenirken hata oluştu: ' + err.message);
+      }
+    };
+
+    window.profilleriYukleVeDemolariGetir = async function() {
+      try {
+        const profilSnap = await getDocs(collection(db, "profiller"));
+        kullaniciProfilleri = {};
+        profilSnap.forEach(d => {
+          kullaniciProfilleri[d.id] = d.data();
+        });
+        demolariGetir();
+      } catch (err) {
+        demolariGetir();
+      }
+    };
+
+    window.demoYukle = async function(e) {
+      e.preventDefault();
+      if (!aktifKullanici) {
+        alert('Demo yüklemek için giriş yapmalısın!');
+        return;
+      }
+
+      const simdi = Date.now();
+      const onBesDakikaMs = 15 * 60 * 1000;
+      const onIkiSaatMs = 12 * 60 * 60 * 1000;
+
+      try {
+        const q = query(collection(db, "demolar"), where("uid", "==", aktifKullanici.uid));
+        const userDemolarSnap = await getDocs(q);
+        
+        let yuklemeZamanlari = [];
+        userDemolarSnap.forEach(docSnap => {
+          const d = docSnap.data();
+          if (d.olusturmaTarihi) {
+            yuklemeZamanlari.push(new Date(d.olusturmaTarihi).getTime());
+          }
+        });
+
+        yuklemeZamanlari.sort((a, b) => b - a);
+
+        if (yuklemeZamanlari.length > 0) {
+          const sonYuklemeZamani = yuklemeZamanlari[0];
+          const gecenSureMs = simdi - sonYuklemeZamani;
+
+          if (gecenSureMs < onBesDakikaMs) {
+            const kalanDakika = Math.ceil((onBesDakikaMs - gecenSureMs) / (60 * 1000));
+            alert(`⚠️ Spam Koruması: 15 dakikada yalnızca 1 demo yükleyebilirsin!\nYeni demo yükleyebilmek için yaklaşık ${kalanDakika} dakika beklemelisin.`);
+            return;
+          }
+
+          const son12SaatIçindekiDemolar = yuklemeZamanlari.filter(t => (simdi - t) < onIkiSaatMs);
+          if (son12SaatIçindekiDemolar.length >= 3) {
+            const enEskiDemoZamani = son12SaatIçindekiDemolar[son12SaatIçindekiDemolar.length - 1];
+            const kalanSaat = ((onIkiSaatMs - (simdi - enEskiDemoZamani)) / (60 * 60 * 1000)).toFixed(1);
+            alert(`⚠️ Sınır Aşıldı: 12 saat içerisinde en fazla 3 demo yükleyebilirsin!\nHakkının yenilenmesi için yaklaşık ${kalanSaat} saat beklemelisin.`);
+            return;
+          }
+        }
+
+        const sanatci = document.getElementById('sanatciAdi').value;
+        const parca = document.getElementById('parcaAdi').value;
+        const dosyaInput = document.getElementById('demoDosya');
+        const dosya = dosyaInput.files[0];
+
+        if (!dosya) {
+          alert('Lütfen bir .mp3 dosyası seçiniz!');
+          return;
+        }
+
+        alert('MP3 yükleniyor, lütfen bekleyin...');
+        const dosyaRef = ref(storage, `demolar/${simdi}_${dosya.name}`);
+        const snapshot = await uploadBytes(dosyaRef, dosya);
+        const downloadUrl = await getDownloadURL(snapshot.ref);
+
+        await addDoc(collection(db, "demolar"), {
+          uid: aktifKullanici.uid,
+          sanatciAdi: sanatci,
+          parcaAdi: parca,
+          url: downloadUrl,
+          puanlar: [],
+          ortalamaPuan: 0,
+          olusturmaTarihi: new Date().toISOString()
+        });
+
+        alert('Demo başarıyla yüklendi! 🚀');
+        document.getElementById('demoForm').reset();
+        profilleriYukleVeDemolariGetir();
+      } catch (err) {
+        alert('Yükleme hatası: ' + err.message);
+      }
+    };
+
+    window.demolariGetir = async function() {
+      const listeDiv = document.getElementById('demolarListesi');
+      const top10Div = document.getElementById('top10Listesi');
+      if(!listeDiv || !top10Div) return;
+
+      try {
+        const snap = await getDocs(collection(db, "demolar"));
+        let demolar = [];
+        snap.forEach(d => {
+          demolar.push({ id: d.id, ...d.data() });
+        });
+
+        if (demolar.length === 0) {
+          listeDiv.innerHTML = '<div style="text-align: center; color: #94a3b8; font-size: 13px; padding: 30px;">Henüz hiç demo yüklenmemiş.</div>';
+          top10Div.innerHTML = '<div style="text-align: center; color: #94a3b8; font-size: 13px; padding: 20px;">Sıralama için demo bekleniyor...</div>';
+          return;
+        }
+
+        demolar.forEach(demo => {
+          if (demo.puanlar && demo.puanlar.length > 0) {
+            const toplam = demo.puanlar.reduce((a, b) => a + b, 0);
+            demo.ortalamaPuan = (toplam / demo.puanlar.length).toFixed(1);
+          } else {
+            demo.ortalamaPuan = "0.0";
+          }
+        });
+
+        demolar.sort((a, b) => new Date(b.olusturmaTarihi) - new Date(a.olusturmaTarihi));
+
+        let htmlDemolar = '';
+        demolar.forEach(demo => {
+          const userProf = kullaniciProfilleri[demo.uid] || {};
+          const avatar = userProf.foto || 'https://i.hizliresim.com/clfwjx9j.png';
+          const insta = userProf.insta ? `<a href="https://instagram.com/${userProf.insta}" target="_blank" class="insta-badge">@${userProf.insta}</a>` : '';
+          const dinlendiMi = dinlenenDemolarSet.has(demo.id) ? 'demo-card listened' : 'demo-card';
+
+          htmlDemolar += `
+            <div class="${dinlendiMi}" id="card-${demo.id}">
+              <div class="demo-header">
+                <div class="artist-profile-area">
+                  <img src="${avatar}" alt="Profil" class="artist-avatar" onerror="this.src='https://i.hizliresim.com/clfwjx9j.png'">
+                  <div>
+                    <div class="demo-song-title">🎵 ${demo.parcaAdi}</div>
+                    <div class="demo-artist-name">🎤 ${demo.sanatciAdi} ${insta}</div>
+                  </div>
+                </div>
+                <div class="demo-current-score">Ort: ${demo.ortalamaPuan}</div>
+              </div>
+              <audio controls src="${demo.url}" onplay="demoDinlendi('${demo.id}')"></audio>
+              
+              <div class="rating-container">
+                <div class="stars-wrapper" id="stars-${demo.id}">
+                  ${yildizlariOlustur(demo.id, 0)}
+                </div>
+                <div class="rating-footer">
+                  <span class="selected-rating-text" id="rating-text-${demo.id}">Puan Seçilmedi</span>
+                  <button class="btn-vote-submit" onclick="puanVer('${demo.id}')">OYLA</button>
+                </div>
+              </div>
+            </div>
+          `;
+        });
+        listeDiv.innerHTML = htmlDemolar;
+
+        let top10Demolar = [...demolar];
+        top10Demolar.sort((a, b) => parseFloat(b.ortalamaPuan) - parseFloat(a.ortalamaPuan));
+        const top10 = top10Demolar.slice(0, 10);
+
+        let htmlTop10 = '';
+        top10.forEach((demo, index) => {
+          const userProf = kullaniciProfilleri[demo.uid] || {};
+          const avatar = userProf.foto || 'https://i.hizliresim.com/clfwjx9j.png';
+          const insta = userProf.insta ? `<span style="color:#f472b6;">@${userProf.insta}</span>` : '';
+
+          htmlTop10 += `
+            <div class="top10-item">
+              <div class="top10-rank">#${index + 1}</div>
+              <img src="${avatar}" alt="Profil" class="artist-avatar" style="width: 32px; height: 32px; margin-left: 4px;" onerror="this.src='https://i.hizliresim.com/clfwjx9j.png'">
+              <div class="top10-info">
+                <div class="top10-name">${demo.parcaAdi}</div>
+                <div class="top10-artist">${demo.sanatciAdi} &bull; ${insta}</div>
+              </div>
+              <div class="top10-score">${demo.ortalamaPuan}</div>
+            </div>
+          `;
+        });
+        top10Div.innerHTML = htmlTop10;
+
+      } catch (err) {
+        listeDiv.innerHTML = '<div style="color: #ef4444; text-align: center;">Demolar yüklenirken hata oluştu.</div>';
+      }
+    };
+
+    window.demoDinlendi = function(demoId) {
+      dinlenenDemolarSet.add(demoId);
+      const card = document.getElementById(`card-${demoId}`);
+      if (card) card.classList.add('listened');
+    };
+
+    window.yildizlariOlustur = function(demoId, secilenDeger) {
+      let html = '';
+      for (let i = 1; i <= 10; i++) {
+        let doluMu = secilenDeger >= i;
+        let sinif = doluMu ? 'star-btn selected' : 'star-btn';
+        html += `<button type="button" class="${sinif}" onclick="yildizSec('${demoId}', ${i})" title="${i} Puan">★</button>`;
+      }
+      return html;
+    };
+
+    window.yildizSec = function(demoId, puan) {
+      secilenPuanlar[demoId] = puan;
+      document.getElementById(`rating-text-${demoId}`).innerHTML = `Seçilen Puan: <strong style="color:#fff;">${puan} / 10</strong>`;
+      
+      const container = document.getElementById(`stars-${demoId}`);
+      let buttons = container.getElementsByTagName('button');
+      for (let i = 0; i < buttons.length; i++) {
+        if (i < puan) buttons[i].classList.add('selected');
+        else buttons[i].classList.remove('selected');
+      }
+    };
+
+    window.puanVer = async function(demoId) {
+      if (!aktifKullanici) {
+        alert('Oylama yapmak için giriş yapmalısın!');
+        return;
+      }
+
+      const puan = secilenPuanlar[demoId];
+      if (!puan) {
+        alert('Lütfen puan vermek için yıldızlara tıklayınız!');
+        return;
+      }
+
+      try {
+        const demoRef = doc(db, "demolar", demoId);
+        const demoSnap = await getDoc(demoRef);
+
+        if (demoSnap.exists()) {
+          const veri = demoSnap.data();
+          let mevcutPuanlar = veri.puanlar || [];
+          mevcutPuanlar.push(puan);
+
+          await updateDoc(demoRef, { puanlar: mevcutPuanlar });
+          alert('Puanın başarıyla kaydedildi! 🎯');
+          profilleriYukleVeDemolariGetir();
+        }
+      } catch (err) {
+        alert('Puan verilirken hata oluştu: ' + err.message);
+      }
+    };
+  </script>
+
+</body>
+</html>

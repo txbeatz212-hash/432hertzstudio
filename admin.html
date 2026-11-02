@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>ADMIN PANELİ | 432 Hertz Studio</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Plus Jakarta Sans', sans-serif; }
+    
+    body { 
+      background: #0a0512; 
+      color: #ffffff; 
+      line-height: 1.6; 
+      min-height: 100vh;
+      padding: 20px;
+    }
+
+    header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #231138; padding-bottom: 15px; margin-bottom: 25px; }
+    .logo-text { font-size: 20px; font-weight: 800; color: #a78bfa; letter-spacing: 1px; }
+
+    /* GİRİŞ EKRANI */
+    .login-container {
+      max-width: 400px;
+      margin: 100px auto;
+      background: rgba(18, 14, 26, 0.95);
+      border: 2px solid #4c1d95;
+      border-radius: 20px;
+      padding: 30px;
+      text-align: center;
+      box-shadow: 0 15px 35px rgba(0,0,0,0.6);
+    }
+    .login-title { font-size: 18px; font-weight: 800; color: #fff; margin-bottom: 20px; }
+    .admin-input { width: 100%; padding: 12px 16px; background: #07040d; border: 1.5px solid #3b1c5c; border-radius: 12px; color: #fff; font-size: 14px; margin-bottom: 15px; outline: none; }
+    .admin-input:focus { border-color: #a78bfa; }
+    .btn-login { width: 100%; background: #ffffff; color: #000; font-size: 14px; font-weight: 800; padding: 14px; border-radius: 12px; border: none; cursor: pointer; }
+    .btn-login:hover { background: #e2e8f0; }
+
+    /* ADMIN SEKMELERİ */
+    .admin-nav-tabs {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 20px;
+      max-width: 1300px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    .tab-btn {
+      background: rgba(18, 14, 26, 0.8);
+      border: 1.5px solid #3b1c5c;
+      color: #94a3b8;
+      font-size: 13px;
+      font-weight: 800;
+      padding: 12px 24px;
+      border-radius: 12px;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+    .tab-btn:hover { color: #fff; background: rgba(59, 28, 92, 0.5); }
+    .tab-btn.active { background: #ffffff !important; color: #000000 !important; border-color: #ffffff; }
+
+    .admin-content-section {
+      display: none;
+      max-width: 1300px;
+      margin: 0 auto;
+    }
+    .admin-content-section.active-tab {
+      display: block;
+    }
+
+    .admin-card {
+      background: rgba(18, 14, 26, 0.9);
+      border: 1.5px solid #3b1c5c;
+      border-radius: 20px;
+      padding: 24px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    }
+    .card-title { font-size: 17px; font-weight: 800; color: #fff; margin-bottom: 15px; border-bottom: 1px solid #2d1747; padding-bottom: 8px; display: flex; justify-content: space-between; align-items: center; }
+
+    .item-row {
+      background: rgba(7, 4, 13, 0.8);
+      border: 1px solid #3b1c5c;
+      border-radius: 12px;
+      padding: 14px;
+      margin-bottom: 12px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+    .item-info { font-size: 13px; color: #cbd5e1; flex: 1; }
+    .item-info strong { color: #fff; }
+
+    .btn-approve { background: #22c55e; color: #000; border: none; padding: 6px 12px; border-radius: 8px; font-weight: 800; font-size: 11px; cursor: pointer; text-decoration: none; display: inline-block; }
+    .btn-reject { background: #f59e0b; color: #000; border: none; padding: 6px 12px; border-radius: 8px; font-weight: 800; font-size: 11px; cursor: pointer; text-decoration: none; display: inline-block; }
+    .btn-delete { background: #ef4444; color: #fff; border: none; padding: 6px 12px; border-radius: 8px; font-weight: 800; font-size: 11px; cursor: pointer; }
+    .btn-ban { background: #dc2626; color: #fff; border: none; padding: 6px 12px; border-radius: 8px; font-weight: 800; font-size: 11px; cursor: pointer; }
+    .btn-whatsapp { background: #25d366; color: #000; border: none; padding: 6px 12px; border-radius: 8px; font-weight: 800; font-size: 11px; cursor: pointer; text-decoration: none; display: inline-block; }
+
+    .badge-status { font-size: 10px; font-weight: 800; padding: 3px 8px; border-radius: 6px; }
+    .status-pending { background: #eab308; color: #000; }
+    .status-approved { background: #22c55e; color: #000; }
+    .status-rejected { background: #ef4444; color: #fff; }
+  </style>
+</head>
+<body>
+
+  <!-- GİRİŞ EKRANI -->
+  <div id="loginEkran" class="login-container">
+    <div class="login-title">🔐 ADMIN GİRİŞİ</div>
+    <form onsubmit="adminGiris(event)">
+      <input type="text" id="kullaniciAdi" class="admin-input" placeholder="Kullanıcı Adı..." required>
+      <input type="password" id="sifre" class="admin-input" placeholder="Şifre..." required>
+      <button type="submit" class="btn-login">GİRİŞ YAP</button>
+    </form>
+  </div>
+
+  <!-- KONTROL PANELİ -->
+  <div id="adminPanel" style="display: none;">
+    <header>
+      <div class="logo-text">432 HERTZ STUDIO &bull; ADMIN KONTROL PANELİ</div>
+      <a href="index.html" style="color: #c4b5fd; text-decoration: none; font-size: 13px; font-weight: 700;">Siteye Dön &rarr;</a>
+    </header>
+
+    <!-- SEKMELER -->
+    <div class="admin-nav-tabs">
+      <button class="tab-btn active" onclick="tabGoster('randevular', this)">📅 RANDEVULAR</button>
+      <button class="tab-btn" onclick="tabGoster('demolar', this)">🎧 DEMOLAR</button>
+      <button class="tab-btn" onclick="tabGoster('uyeler', this)">👥 ÜYELER</button>
+    </div>
+
+    <!-- 1. RANDEVULAR SEKMESİ -->
+    <div id="sec-randevular" class="admin-content-section active-tab">
+      <div class="admin-card">
+        <div class="card-title">
+          <span>GELEN RANDEVU TALEPLERİ</span>
+          <button onclick="randevulariYukle()" style="background:#3b1c5c; color:#fff; border:none; padding:4px 10px; border-radius:6px; cursor:pointer; font-size:11px;">Yenile 🔄</button>
+        </div>
+        <div id="randevularListesi">
+          <div style="color:#94a3b8; font-size:13px; text-align:center; padding:15px;">Yükleniyor...</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 2. DEMOLAR SEKMESİ -->
+    <div id="sec-demolar" class="admin-content-section">
+      <div class="admin-card">
+        <div class="card-title">
+          <span>YÜKLENEN DEMOLARI YÖNET</span>
+          <button onclick="demolariAdminYukle()" style="background:#3b1c5c; color:#fff; border:none; padding:4px 10px; border-radius:6px; cursor:pointer; font-size:11px;">Yenile 🔄</button>
+        </div>
+        <div id="demolarAdminListesi">
+          <div style="color:#94a3b8; font-size:13px; text-align:center; padding:15px;">Yükleniyor...</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 3. ÜYELER SEKMESİ -->
+    <div id="sec-uyeler" class="admin-content-section">
+      <div class="admin-card">
+        <div class="card-title">
+          <span>ÜYE YÖNETİMİ & BANLAMA</span>
+          <button onclick="uyeleriAdminYukle()" style="background:#3b1c5c; color:#fff; border:none; padding:4px 10px; border-radius:6px; cursor:pointer; font-size:11px;">Yenile 🔄</button>
+        </div>
+        <div id="uyelerAdminListesi">
+          <div style="color:#94a3b8; font-size:13px; text-align:center; padding:15px;">Yükleniyor...</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+    import { getFirestore, collection, getDocs, doc, deleteDoc, updateDoc, setDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyAgrDZnD2g9FOBjOCeNZkDfn4bVaA-Hv5o",
+      authDomain: "hz-studio-e9b1f.firebaseapp.com",
+      projectId: "hz-studio-e9b1f",
+      storageBucket: "hz-studio-e9b1f.firebasestorage.app",
+      messagingSenderId: "991778271893",
+      appId: "1:991778271893:web:74f76119ee245ddd67a19c",
+      measurementId: "G-2DFBRB4DC9"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+
+    window.adminGiris = function(e) {
+      e.preventDefault();
+      const girilenKullanici = document.getElementById('kullaniciAdi').value;
+      const girilenSifre = document.getElementById('sifre').value;
+
+      if (girilenKullanici === 'txhx3134' && girilenSifre === 'Txhx31Ceyhun34') {
+        document.getElementById('loginEkran').style.display = 'none';
+        document.getElementById('adminPanel').style.display = 'block';
+        randevulariYukle();
+        demolariAdminYukle();
+        uyeleriAdminYukle();
+      } else {
+        alert('Hatalı kullanıcı adı veya şifre!');
+      }
+    };
+
+    window.tabGoster = function(tabAdi, btn) {
+      document.querySelectorAll('.admin-content-section').forEach(sec => sec.classList.remove('active-tab'));
+      document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+      document.getElementById('sec-' + tabAdi).classList.add('active-tab');
+      btn.classList.add('active');
+    };
+
+    // RANDEVULAR VE WHATSAPP ENTEGRASYONU
+    window.randevulariYukle = async function() {
+      const container = document.getElementById('randevularListesi');
+      try {
+        const snap = await getDocs(collection(db, "randevular"));
+        let html = '';
+        snap.forEach(d => {
+          const r = d.data();
+          let durumBadge = '<span class="badge-status status-pending">BEKLEMEDE</span>';
+          if (r.durum === 'Onaylandı') durumBadge = '<span class="badge-status status-approved">ONAYLANDI</span>';
+          if (r.durum === 'Reddedildi') durumBadge = '<span class="badge-status status-rejected">REDDEDİLDİ</span>';
+          
+          let telTemiz = r.telefon ? r.telefon.replace(/[^0-9]/g, '') : '';
+          if (telTemiz.startsWith('0')) telTemiz = '9' + telTemiz;
+          else if (!telTemiz.startsWith('90')) telTemiz = '90' + telTemiz;
+
+          const onayMesaji = encodeURIComponent(`Selam ${r.ad}, 432 Hertz Studio için ${r.tarih} saat ${r.saat} randevun ONAYLANDI! Stüdyoda görüşmek üzere 🎙️🔥`);
+          const redMesaji = encodeURIComponent(`Selam ${r.ad}, maalesef ${r.tarih} saat ${r.saat} için olan randevu talebiniz yoğunluk sebebiyle ONAYLANAMADI. Başka bir tarihte görüşmek üzere.`);
+
+          html += `
+            <div class="item-row">
+              <div class="item-info">
+                <strong>${r.ad}</strong> (${r.telefon}) &bull; ${r.hizmet}<br>
+                <span style="color:#a78bfa;">${r.tarih} - ${r.saat}</span> &bull; Not: ${r.not || 'Yok'}
+              </div>
+              <div style="display:flex; gap:6px; align-items:center; flex-wrap:wrap;">
+                ${durumBadge}
+                <button class="btn-approve" onclick="randevuDurumGuncelle('${d.id}', 'Onaylandı')">ONAYLA</button>
+                <button class="btn-reject" onclick="randevuDurumGuncelle('${d.id}', 'Reddedildi')">REDDET</button>
+                <a href="https://wa.me/${telTemiz}?text=${r.durum === 'Reddedildi' ? redMesaji : onayMesaji}" target="_blank" class="btn-whatsapp">WHATSAPP 💬</a>
+                <button class="btn-delete" onclick="randevuSil('${d.id}')">SİL</button>
+              </div>
+            </div>
+          `;
+        });
+        container.innerHTML = html || '<div style="color:#94a3b8; text-align:center;">Randevu yok.</div>';
+      } catch(e) { container.innerHTML = 'Hata oluştu.'; }
+    };
+
+    window.randevuDurumGuncelle = async function(id, yeniDurum) {
+      await updateDoc(doc(db, "randevular", id), { durum: yeniDurum });
+      alert(`Randevu ${yeniDurum} olarak işaretlendi!`);
+      randevulariYukle();
+    };
+
+    window.randevuSil = async function(id) {
+      if (confirm('Randevuyu silmek istediğine emin misin?')) {
+        await deleteDoc(doc(db, "randevular", id));
+        randevulariYukle();
+      }
+    };
+
+    // DEMOLAR
+    window.demolariAdminYukle = async function() {
+      const container = document.getElementById('demolarAdminListesi');
+      try {
+        const snap = await getDocs(collection(db, "demolar"));
+        let html = '';
+        snap.forEach(d => {
+          const demo = d.data();
+          html += `
+            <div class="item-row">
+              <div class="item-info">
+                <strong>🎵 ${demo.parcaAdi}</strong> - 🎤 ${demo.sanatciAdi}<br>
+                <span style="font-size:11px; color:#94a3b8;">Ort: ${demo.ortalamaPuan || 0} / 10</span>
+              </div>
+              <button class="btn-delete" onclick="demoSil('${d.id}')">DEMOYU SİL</button>
+            </div>
+          `;
+        });
+        container.innerHTML = html || '<div style="color:#94a3b8; text-align:center;">Demo yok.</div>';
+      } catch(e) { container.innerHTML = 'Hata oluştu.'; }
+    };
+
+    window.demoSil = async function(id) {
+      if (confirm('Bu demoyu kalıcı olarak silmek istediğine emin misin?')) {
+        await deleteDoc(doc(db, "demolar", id));
+        alert('Demo silindi!');
+        demolariAdminYukle();
+      }
+    };
+
+    // ÜYELER
+    window.uyeleriAdminYukle = async function() {
+      const container = document.getElementById('uyelerAdminListesi');
+      try {
+        const snap = await getDocs(collection(db, "profiller"));
+        let html = '';
+        snap.forEach(d => {
+          const u = d.data();
+          const banliMi = u.banli ? '<span style="color:#ef4444; font-weight:800;">[BANLI]</span>' : '';
+          html += `
+            <div class="item-row">
+              <div class="item-info">
+                <strong>${u.email || 'Kullanıcı ID: ' + d.id}</strong> ${banliMi}<br>
+                <span style="font-size:11px; color:#94a3b8;">Insta: @${u.insta || 'Yok'}</span>
+              </div>
+              <button class="btn-ban" onclick="uyeBanla('${d.id}', ${!u.banli})">${u.banli ? 'BANI KALDIR' : 'BANLA 🚫'}</button>
+            </div>
+          `;
+        });
+        container.innerHTML = html || '<div style="color:#94a3b8; text-align:center;">Kayıtlı üye profili yok.</div>';
+      } catch(e) { container.innerHTML = 'Hata oluştu.'; }
+    };
+
+    window.uyeBanla = async function(uid, durum) {
+      const mesaj = durum ? 'Bu kullanıcıyı banlamak istediğine emin misin?' : 'Kullanıcının banını kaldırmak istediğine emin misin?';
+      if (confirm(mesaj)) {
+        await setDoc(doc(db, "profiller", uid), { banli: durum }, { merge: true });
+        alert(durum ? 'Kullanıcı BANLANDI!' : 'Ban kaldırıldı!');
+        uyeleriAdminYukle();
+      }
+    };
+  </script>
+
+</body>
+</html>
